@@ -13,6 +13,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.bridgelabz.Utility.Util;
+
 public class JsonInventory {
 
 	public static void main(String[] args) throws IOException{
@@ -20,7 +22,7 @@ public class JsonInventory {
 		 // File file=new File("/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs");
 	      JSONObject inventory=new JSONObject();
 	      Scanner sc=new Scanner(System.in);
-	      
+	      long total=0;
 	 	  JSONArray array=new JSONArray(); 
 	      for(int i=0;i<3;i++) {
 		 	  JSONObject temp=new JSONObject();
@@ -36,37 +38,38 @@ public class JsonInventory {
 	     
 	      inventory.put("inventory", array);
 	      sc.close();
-	        try  {
-	        	FileWriter file = new FileWriter("/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/inventory.json");
-	            file.write(inventory.toJSONString());
-	            file.close();
-	      } catch (IOException e) {
-	            e.printStackTrace();
-	      }
+	    Util.appendFile(inventory.toJSONString(), "/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/inventory.json");
 	
 
     JSONParser parser = new JSONParser();
 
     try {
-
-    	JSONObject jobj = (JSONObject)parser.parse(new FileReader("/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/inventory.json"));
+    	String farray[]=Util.readFile("/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/inventory.json");
+    	
+    	String jsonstring="";
+    	for(String str:farray){
+    		jsonstring=jsonstring+str;
+    	}
+    	JSONObject jobj = (JSONObject)parser.parse(jsonstring);
+    	/*for(int i=0;i<farray.length;i++) {
+    		jobj= (JSONObject)parser.parse(farray[i]);
+    	}*/
     	JSONArray jarray=(JSONArray) jobj.get("inventory");
         
         for(Object obj1: jarray) {
         	JSONObject jsonObject = (JSONObject) obj1;
         	long value=(long) jsonObject.get("price");
+        	total=total+value;
         	System.out.println(value);
         }
+    }
        
 
-
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    } catch (IOException ie) {
-        ie.printStackTrace();
-    } catch (ParseException ie1) {
+  
+    catch (ParseException ie1) {
         ie1.printStackTrace();
     }
+    System.out.println("final result"+total);
 
 }
 }
