@@ -1,7 +1,13 @@
 package com.bridgelabz.Programs;
 
 
-
+/***************************************************************************
+* Purpose : To create class for linked list
+*
+* @author   Aashish
+* @version  1.0
+* @since    13-10-2017
+****************************************************************************/
 public class LinkedList<T> {
 	Node<T> head;
 	Node<T> tail;
@@ -11,7 +17,7 @@ public class LinkedList<T> {
 
 		Node<T> nd = new Node<T>();
 		nd.setValue(element);
-		//System.out.println("Adding: " + element);
+		
 
 		if (head == null) {
 
@@ -37,6 +43,10 @@ public class LinkedList<T> {
 		head = refNode;
 
 	}
+
+
+	
+
 
 	public void view() {
 		Node<T> tmp = new Node<T>();
@@ -91,13 +101,15 @@ public class LinkedList<T> {
 
 		Node<T> tmp = head;
 		Node<T> refNode = new Node<T>();
+		if(tmp!=null) {
 
 		refNode = tmp;
 		tmp = tmp.getNextRef();
 
 		head = tmp;
-		//System.out.println(refNode.getValue());
-		return refNode.getValue();
+				return refNode.getValue();
+		}
+		return null;
 
 	}
 
@@ -249,7 +261,7 @@ public class LinkedList<T> {
 
 			prev = tmp;
 
-			if (i == pos - 1 || tmp.getNextRef() == null) {
+			if (i == pos-1  || tmp.getNextRef() == null) {
 
 				refNode = tmp;
 
@@ -284,11 +296,6 @@ public class LinkedList<T> {
 				prev.setNextRef(tmp1);
 				tmp1.setNextRef(next);
 
-				System.out.println(prev.getValue());
-
-				System.out.println(tmp1.getValue());
-
-				System.out.println(next.getValue());
 
 			}
 		}
@@ -333,7 +340,7 @@ public class LinkedList<T> {
 			if (tmp == null) {
 				break;
 			}
-			// System.out.println(tmp.getValue());
+		
 
 			array[i] = tmp.getValue().toString();
 			i++;
@@ -365,7 +372,7 @@ public class LinkedList<T> {
 
 		int i = 0;
 		int flag = 0;
-		int currentNo;
+		String currentNo;
 
 		while (true) {
 			if (tmp == null) {
@@ -374,8 +381,8 @@ public class LinkedList<T> {
 
 			}
 
-			currentNo = (Integer) tmp.getValue();
-			if (tmp.getValue().equals(element) || ((Integer) element).compareTo(currentNo) < 0) {
+			currentNo = (String) tmp.getValue();
+			if (tmp.getValue().equals(element) ||( ((String) element).compareTo(currentNo)) < 0) {
 				return i;
 
 			}
@@ -443,11 +450,11 @@ public class LinkedList<T> {
 
 				count++;
 				tmp = tmp.getNextRef();
-				// System.out.println("currentNode value"+tmp.getValue());
+				
 			}
 
 		}
-		//System.out.println("size in method" + count);
+		
 		return count;
 	}
 

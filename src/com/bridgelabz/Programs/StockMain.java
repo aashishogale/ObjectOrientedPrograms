@@ -1,6 +1,12 @@
 package com.bridgelabz.Programs;
 import java.util.Scanner;
-
+/***************************************************************************
+* Purpose : To create class simple stock
+*
+* @author   Aashish
+* @version  1.0
+* @since    13-10-2017
+****************************************************************************/
 public class StockMain {
 
 	public static void main(String[] args) {

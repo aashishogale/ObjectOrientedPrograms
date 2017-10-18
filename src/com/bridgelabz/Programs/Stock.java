@@ -9,7 +9,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.Utility.Util;
-
+/***************************************************************************
+* Purpose : To create class Stock
+*
+* @author   Aashish
+* @version  1.0
+* @since    13-10-2017
+****************************************************************************/
 public class Stock {
 	String file="/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/stock.json";
 

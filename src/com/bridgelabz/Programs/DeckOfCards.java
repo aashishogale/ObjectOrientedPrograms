@@ -1,7 +1,13 @@
 package com.bridgelabz.Programs;
 
 import com.bridgelabz.Utility.Util;
-
+/***************************************************************************
+* Purpose : To create class for shuffling deck of cards
+*
+* @author   Aashish
+* @version  1.0
+* @since    14-10-2017
+****************************************************************************/
 public class DeckOfCards {
 	public static void main(String args[]) {
 	String []suits={"Clubs", "Diamonds", "Hearts", "Spades"};

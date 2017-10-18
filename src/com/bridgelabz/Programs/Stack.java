@@ -1,6 +1,12 @@
 package com.bridgelabz.Programs;
 
-
+/***************************************************************************
+* Purpose : To create class for Stack
+*
+* @author   Aashish
+* @version  1.0
+* @since    13-10-2017
+****************************************************************************/
 
 public class Stack<T> {
 	LinkedList<T> list=new LinkedList<T>();

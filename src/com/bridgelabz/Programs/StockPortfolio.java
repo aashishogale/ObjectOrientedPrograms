@@ -6,7 +6,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.Utility.Util;
-
+/***************************************************************************
+* Purpose : To create class for Stock portfolio
+*
+* @author   Aashish
+* @version  1.0
+* @since    13-10-2017
+****************************************************************************/
 public class StockPortfolio {
 	public long getTotal() {
 		Stock stock=new Stock();

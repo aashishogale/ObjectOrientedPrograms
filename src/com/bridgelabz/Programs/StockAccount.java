@@ -14,7 +14,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.Utility.Util;
-
+/***************************************************************************
+* Purpose : To create class for Stock Account
+*
+* @author   Aashish
+* @version  1.0
+* @since    13-10-2017
+****************************************************************************/
 public class StockAccount {
 	Scanner sc = new Scanner(System.in);
 	String userfile = "/home/bridgeit/Desktop/useraccount.json";
@@ -201,7 +207,8 @@ public class StockAccount {
 
 		Util.appendFile(stock.toJSONString(), file);
 		
-	}
+}
+	
 
 	public void getUserInput() {
 		System.out.println("enter the number of  names  to add");

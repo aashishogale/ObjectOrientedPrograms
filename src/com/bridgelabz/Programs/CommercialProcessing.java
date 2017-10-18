@@ -2,7 +2,13 @@ package com.bridgelabz.Programs;
 
 import java.io.IOException;
 import java.util.Scanner;
-
+/***************************************************************************
+* Purpose : To create class for STockaccount
+*
+* @author   Aashish
+* @version  1.0
+* @since    14-10-2017
+****************************************************************************/
 public class CommercialProcessing {
 	public static void main(String args[]) throws IOException {
 		StockAccount stock=new StockAccount("/home/bridgeit/Desktop/stockaccount.json");
