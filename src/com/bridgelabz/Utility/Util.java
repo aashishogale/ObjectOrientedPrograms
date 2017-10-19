@@ -26,7 +26,10 @@ public class Util {
 	static Random random;
 	static int array[] = new int[52];
 	static String addressbooks = "/home/bridgeit/Desktop/addressbook.json";
-	static String doctorbook = "/home/bridgeit/Doctor.json";
+	static String doctorbook = "/home/bridgeit/Desktop/Doctor.json";
+	static String patientbook = "/home/bridgeit/Desktop/Patient.json";
+	static String appointment = "/home/bridgeit/Desktop/appointment.json";
+	static Random random1 = new Random();
 
 	public static String[] readFile(String filePath) {
 		String words[] = {};
@@ -495,41 +498,455 @@ public class Util {
 		}
 	}
 
-	public static void addDoctor() {
+	public static void addNewDoctor() {
 		JSONObject jsonobject1 = new JSONObject();
 
 		JSONArray array1 = new JSONArray();
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(addressbooks));
+			BufferedReader br = new BufferedReader(new FileReader(doctorbook));
 			if (br.readLine() != null) {
-				Util.addAddressBook();
+				Util.addDoctor();
 				return;
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("enter the number of doctors  to add");
-		int number = scanner.nextInt();
-		for (int i = 0; i < number; i++) {
+
 			JSONObject infoObject = new JSONObject();
 			System.out.println("enter  name");
 
 			infoObject.put("name", scanner.next());
-			System.out.println("enter specialization");
+			System.out.println("enter specializtion");
 
 			infoObject.put("special", Util.getSpecial());
 			System.out.println("enter availability");
 
 			infoObject.put("avail", Util.getAvail());
 
+			infoObject.put("id", Util.getDoctorid());
+
+			array1.add(infoObject);
+			jsonobject1.put("doctor", array1);
+			Util.appendFile(jsonobject1.toJSONString(), doctorbook);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		jsonobject1.put("doctor", array1);
-		Util.appendFile(jsonobject1.toJSONString(), doctorbook);
+	}
+
+	public static void addDoctor() {
+		JSONObject jsonobject1 = new JSONObject();
+
+		JSONArray array1 = new JSONArray();
+		JSONParser parser = new JSONParser();
+		try {
+
+			JSONObject arrayobject = (JSONObject) parser.parse(new FileReader(doctorbook));
+
+			JSONArray parseArray = (JSONArray) arrayobject.get("doctor");
+			JSONObject infoObject = new JSONObject();
+			System.out.println("enter  name");
+			String name = scanner.nextLine();
+			infoObject.put("name", name);
+
+			infoObject.put("special", Util.getSpecial());
+			System.out.println("enter availability");
+
+			infoObject.put("avail", Util.getAvail());
+
+			infoObject.put("id", Util.getDoctorid());
+			parseArray.add(infoObject);
+			jsonobject1.put("doctor", parseArray);
+			Util.appendFile(jsonobject1.toJSONString(), doctorbook);
+
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
+
+	public static void addNewPatient(String patient) {
+		JSONObject jsonobject1 = new JSONObject();
+
+		JSONArray array1 = new JSONArray();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(patientbook));
+			if (br.readLine() != null) {
+				Util.addPatient(patient);
+				return;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+			JSONObject infoObject = new JSONObject();
+
+
+			infoObject.put("name", patient);
+			System.out.println("enter mobile id");
+
+			infoObject.put("mobile", scanner.nextInt());
+			System.out.println("enter age");
+
+			infoObject.put("age", scanner.nextInt());
+
+			infoObject.put("id", Util.getPatientid());
+
+			array1.add(infoObject);
+		
+
+		jsonobject1.put("patient", array1);
+		Util.appendFile(jsonobject1.toJSONString(), patientbook);
+
+	}
+
+	public static void addPatient(String patient) {
+		JSONObject jsonobject1 = new JSONObject();
+
+		JSONParser parser = new JSONParser();
+		try {
+			JSONObject arrayobject = (JSONObject) parser.parse(new FileReader(patientbook));
+
+			JSONArray parseArray = (JSONArray) arrayobject.get("patient");
+
+		
+				JSONObject infoObject = new JSONObject();
+			
+
+				infoObject.put("name", patient);
+				System.out.println("enter mobile id");
+				infoObject.put("mobile", scanner.nextInt());
+				System.out.println("enter age");
+
+				infoObject.put("age", scanner.nextInt());
+
+				infoObject.put("id", Util.getPatientid());
+				parseArray.add(infoObject);
+
+			
+			jsonobject1.put("patient", parseArray);
+			Util.appendFile(jsonobject1.toJSONString(), patientbook);
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public static boolean searchDoctor(String name) {
+
+		
+int flag=0;
+		JSONParser parser = new JSONParser();
+
+		try {
+			JSONObject arrayobject = (JSONObject) parser.parse(new FileReader(doctorbook));
+
+			JSONArray parseArray = (JSONArray) arrayobject.get("doctor");
+			for (int i = 0; i < parseArray.size() - 1; i++) {
+				// JSONObject tempObject=new JSONObject();
+				JSONObject nameselect = (JSONObject) parseArray.get(i);
+
+				if (nameselect.get("name").equals(name)) {
+					System.out.println("element found at" + i + nameselect.toJSONString());
+					flag = 1;
+					return true;
+
+				}
+
+			}
+			if (flag == 0) {
+				return false;
+			}
+
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean searchPatient() {
+
+		int number;
+		String[] valuelist = { "name", "mobile", "id" };
+		System.out.println("1.name 2.avail 3.id 4.special");
+		int flag = 0;
+		number = scanner.nextInt();
+		System.out.println("enter value");
+		String value = scanner.next();
+		JSONParser parser = new JSONParser();
+
+		try {
+			JSONObject arrayobject = (JSONObject) parser.parse(new FileReader(doctorbook));
+
+			JSONArray parseArray = (JSONArray) arrayobject.get("doctor");
+			for (int i = 0; i < parseArray.size() - 1; i++) {
+				// JSONObject tempObject=new JSONObject();
+				JSONObject nameselect = (JSONObject) parseArray.get(i);
+
+				if (nameselect.get(valuelist[i]).equals(value)) {
+					System.out.println("element found at" + i + nameselect.toJSONString());
+					flag = 1;
+					return true;
+
+				}
+
+			}
+			if (flag == 0) {
+				return false;
+			}
+
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static long getDoctorid() {
+
+		JSONParser parser = new JSONParser();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(doctorbook));
+			if (br.readLine() == null) {
+
+				return 1;
+			}
+			JSONObject arrayobject = (JSONObject) parser.parse(new FileReader(doctorbook));
+
+			JSONArray parseArray = (JSONArray) arrayobject.get("doctor");
+
+			JSONObject nameselect = (JSONObject) parseArray.get(parseArray.size() - 1);
+
+			long id = (long) nameselect.get("id");
+
+			return id + 1;
+
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+	public static long getPatientid() {
+
+		JSONParser parser = new JSONParser();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(patientbook));
+			if (br.readLine() == null) {
+
+				return 1;
+			}
+			JSONObject arrayobject = (JSONObject) parser.parse(new FileReader(patientbook));
+
+			JSONArray parseArray = (JSONArray) arrayobject.get("patient");
+
+			JSONObject nameselect = (JSONObject) parseArray.get(parseArray.size() - 1);
+			long id = (long) nameselect.get("id");
+			return id + 1;
+
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+	public static void addNewAppointment(String patient) {
+		JSONObject jsonobject1 = new JSONObject();
+
+		JSONArray array1 = new JSONArray();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(appointment));
+			if (br.readLine() != null) {
+				Util.addAppointment(patient);
+				return;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JSONObject infoObject = new JSONObject();
+		System.out.println("enter  doctor name");
+		String doctor = scanner.nextLine();
+		if (searchDoctor(doctor)) {
+			infoObject.put("doctor", doctor);
+
+			JSONArray patientArray = new JSONArray();
+			
+
+			
+			patientArray.add(patient);
+			infoObject.put("patients", patientArray);
+			infoObject.put("patientcount", 1);
+			Util.addNewPatient(patient);
+			
+
+		} else {
+			System.out.println("doctor not found");
+		}
+
+		array1.add(infoObject);
+
+		jsonobject1.put("appointment", array1);
+		Util.appendFile(jsonobject1.toJSONString(), appointment);
+
+	}
+
+	private static void addAppointment(String patient) {
+		JSONObject jsonobject1 = new JSONObject();
+		JSONParser parser = new JSONParser();
+		JSONArray array1 = new JSONArray();
+		JSONObject arrayobject = new JSONObject();
+		JSONArray patientArray=new JSONArray();
+		JSONObject infoObject = new JSONObject();
+		try {
+			arrayobject = (JSONObject) parser.parse(new FileReader(appointment));
+		
+
+		JSONArray parseArray = (JSONArray) arrayobject.get("appointment");
+
+		
+		System.out.println("enter  doctor name");
+		String doctor = scanner.nextLine();
+		if (!searchDoctor(doctor)) {
+			System.out.println("Doctor not found");
+			
+		}
+		if (searchAppointment(doctor)) {
+
+			JSONObject tempObject = new JSONObject();
+			for (int i = 0; i < parseArray.size(); i++) {
+
+				JSONObject nameselect = (JSONObject) parseArray.get(i);
+				if (nameselect.get("doctor").equals(doctor)) {
+			//System.out.println(nameselect.toJSONString());
+					 patientArray = (JSONArray) nameselect.get("patients");
+						
+
+						
+						
+						
+					break;
+				}
+			}
+
+			
+			patientArray.add(patient);
+			tempObject.put("patients", patientArray);
+			int number = (int) tempObject.get("patientcount");
+			tempObject.replace("patientcount", number + 1);
+
+			parseArray.add(tempObject);
+			jsonobject1.put("appointment", parseArray);
+			Util.appendFile(jsonobject1.toJSONString(), appointment);
+			Util.addNewPatient(patient);
+			
+		}
+		 else {
+
+			infoObject.put("doctor", doctor);
+
+		 patientArray = new JSONArray();
+			
+
+			
+			patientArray.add(patient);
+			infoObject.put("patients", patientArray);
+			infoObject.put("patientcount", 1);
+
+			parseArray.add(infoObject);
+			infoObject.put("appointment", parseArray);
+			Util.appendFile(infoObject.toJSONString(), appointment);
+			Util.addNewPatient(patient);
+		}} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+
+	private static boolean searchAppointment(String doctor) {
+
+		int flag = 0;
+		JSONParser parser = new JSONParser();
+
+		try {
+			JSONObject arrayobject = (JSONObject) parser.parse(new FileReader(appointment));
+
+			JSONArray parseArray = (JSONArray) arrayobject.get("appointment");
+			for (int i = 0; i < parseArray.size() - 1; i++) {
+				// JSONObject tempObject=new JSONObject();
+				JSONObject nameselect = (JSONObject) parseArray.get(i);
+
+				if (nameselect.get("doctor").equals(doctor)) {
+					System.out.println("element found at" + i + nameselect.toJSONString());
+					flag = 1;
+					return true;
+
+				}
+
+			}
+			if (flag == 0) {
+				return false;
+			}
+
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	// TODO Auto-generated method stub
 
 	public static String getSpecial() {
 		String array[] = { "Heart", "Brain", "Lungs" };
