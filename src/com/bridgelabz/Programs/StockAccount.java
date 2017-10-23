@@ -1,8 +1,5 @@
 package com.bridgelabz.Programs;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,16 +8,16 @@ import java.util.Scanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.Utility.Util;
+
 /***************************************************************************
-* Purpose : To create class for Stock Account
-*
-* @author   Aashish
-* @version  1.0
-* @since    13-10-2017
-****************************************************************************/
+ * Purpose : To create class for Stock Account
+ *
+ * @author Aashish
+ * @version 1.0
+ * @since 13-10-2017
+ ****************************************************************************/
 public class StockAccount {
 	Scanner sc = new Scanner(System.in);
 	String userfile = "/home/bridgeit/Desktop/useraccount.json";
@@ -29,188 +26,180 @@ public class StockAccount {
 	JSONObject stock1 = new JSONObject();
 	JSONArray array = new JSONArray();
 	JSONArray array1 = new JSONArray();
-	LinkedList<String> list=new LinkedList<String>();
-	Stack<String> stack=new Stack<String>();
+	LinkedList<String> list = new LinkedList<String>();
+	Stack<String> stack = new Stack<String>();
 	Queue<String> queue = new Queue<String>();
+
 	StockAccount(String filename) {
-		
+
 		this.file = filename;
 
-	
-
 		getInput();
-	
-	
 
-		
 		getUserInput();
-	
 
 	}
+	/**
+	 * This method will buy the given stock
+	 * 
+	 * @param amount symbol,name
+	 * @return 
+	 *            
+	 */
 
-	public void buy(int amount, String symbol,String name)  {
-		
-	
+	public void buy(int amount, String symbol, String name) {
+
 		long totalprice = 0;
-		JSONParser parser = new JSONParser();
-		long total = 0;
-		try {
 
-			/*
-			 * String jsonstring=""; for(String str:farray){
-			 * jsonstring=jsonstring+str; }
-			 */
-			JSONObject jobj = (JSONObject) parser.parse(new FileReader(file));
+		JSONArray jarray = Util.getjsonArray(file, "stockaccount");
 
-			JSONArray jarray = (JSONArray) jobj.get("stockaccount");
+		for (Object obj1 : jarray) {
+			JSONObject jsonObject = (JSONObject) obj1;
+			if (jsonObject.get("symbol").equals(symbol)) {
 
-			for (Object obj1 : jarray) {
-				JSONObject jsonObject = (JSONObject) obj1;
-				if (jsonObject.get("symbol").equals(symbol)) {
-
-					long number = (long) jsonObject.get("number");
-					totalprice = amount* (long) jsonObject.get("price");
-					System.out.println(totalprice);
-					if (number > amount) {
-						int newnumber = (int) (number - amount);
-						jsonObject.replace("number", newnumber);
-
-					}
-					
-				}
-			}
-			
-			stock.put("stockaccount", jarray);
-			Util.appendFile(stock.toJSONString(), file);
-			/*
-			 * String uarray[]=Util.readFile(userfile);
-			 * 
-			 * String ujsonstring=""; for(String str:uarray){
-			 * jsonstring=jsonstring+str; }
-			 */
-			JSONObject ujobj = (JSONObject) parser.parse(new FileReader(userfile));
-
-			JSONArray ujarray = (JSONArray) ujobj.get("useraccount");
-
-			for (Object uobj : ujarray) {
-				JSONObject jsonObject = (JSONObject) uobj;
-				if (jsonObject.get("name").equals(name)) {
-					jsonObject.replace("balance", (long) jsonObject.get("balance") - totalprice);
-					jsonObject.replace("number", (long) jsonObject.get("number") +amount);
+				long number = (long) jsonObject.get("number");
+				totalprice = amount * (long) jsonObject.get("price");
+				System.out.println(totalprice);
+				if (number > amount) {
+					int newnumber = (int) (number - amount);
+					jsonObject.replace("number", newnumber);
 
 				}
 
 			}
-			stock1.put("useraccount", ujarray);
-			Util.appendFile(stock1.toJSONString(), userfile);
-			stack.push(symbol);
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			Date date = new Date();
-			
-			queue.enqueue(String.valueOf(dateFormat.format(date)));
-
-		} catch (ParseException ie1) {
-			ie1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
-		
-	
-	}
+		stock.put("stockaccount", jarray);
+		Util.appendFile(stock.toJSONString(), file);
 
-	public void sell(int amount, String name,String symbol) {
-		
+		JSONArray ujarray = Util.getjsonArray(userfile, "useracount");
+
+		for (Object uobj : ujarray) {
+			JSONObject jsonObject = (JSONObject) uobj;
+			if (jsonObject.get("name").equals(name)) {
+				jsonObject.replace("balance", (long) jsonObject.get("balance") - totalprice);
+				jsonObject.replace("number", (long) jsonObject.get("number") + amount);
+
+			}
+
+		}
+		stock1.put("useraccount", ujarray);
+		Util.appendFile(stock1.toJSONString(), userfile);
+		stack.push(symbol);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+
+		queue.enqueue(String.valueOf(dateFormat.format(date)));
+
+	}
+	/**
+	 * This method will sell the given stock
+	 * 
+	 * @param amount symbol,name
+	 * @return 
+	 *            
+	 */
+	public void sell(int amount, String name, String symbol) {
+
 		long totalprice = 0;
-		JSONParser parser = new JSONParser();
-		long total = 0;
-		try {
-			
-			JSONObject jobj = (JSONObject) parser.parse(new FileReader(file));
+		new JSONParser();
+		JSONArray jarray = Util.getjsonArray(file, "stockaccount");
 
-			JSONArray jarray = (JSONArray) jobj.get("stockaccount");
-
-
-			for (Object obj1 : jarray) {
-				JSONObject jsonObject = (JSONObject) obj1;
-				if (jsonObject.get("symbol").equals(symbol)) {
-					long number = (long) jsonObject.get("number");
-					totalprice = amount * (long) jsonObject.get("price");
-					jsonObject.replace("number", (long) jsonObject.get("number") + amount);
-
-				}
-			}
-			stock.put("stockaccount", jarray);
-			Util.appendFile(stock.toJSONString(), file);
-
-			
-			JSONObject ujobj = (JSONObject) parser.parse(new FileReader (userfile));
-
-			JSONArray ujarray = (JSONArray) ujobj.get("useraccount");
-
-			for (Object uobj : ujarray) {
-				JSONObject jsonObject = (JSONObject) uobj;
-				if (jsonObject.get("name").equals(name)) {
-					jsonObject.replace("balance", (long) jsonObject.get("balance") + totalprice);
-					jsonObject.replace("number", (long) jsonObject.get("number") - amount);
-
-				}
+		for (Object obj1 : jarray) {
+			JSONObject jsonObject = (JSONObject) obj1;
+			if (jsonObject.get("symbol").equals(symbol)) {
+				jsonObject.get("number");
+				totalprice = amount * (long) jsonObject.get("price");
+				jsonObject.replace("number", (long) jsonObject.get("number") + amount);
 
 			}
-			stack.push(symbol);
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			Date date = new Date();
-			
-			queue.enqueue(String.valueOf(dateFormat.format(date)));
-			stock1.put("useraccount", ujarray);
-			Util.appendFile(stock1.toJSONString(), userfile);
-			
+		}
+		stock.put("stockaccount", jarray);
+		Util.appendFile(stock.toJSONString(), file);
+
+		JSONArray ujarray = Util.getjsonArray(userfile, "useraccount");
+
+		for (Object uobj : ujarray) {
+			JSONObject jsonObject = (JSONObject) uobj;
+			if (jsonObject.get("name").equals(name)) {
+				jsonObject.replace("balance", (long) jsonObject.get("balance") + totalprice);
+				jsonObject.replace("number", (long) jsonObject.get("number") - amount);
+
+			}
 
 		}
+		stack.push(symbol);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
 
-		catch (ParseException ie1) {
-			ie1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		queue.enqueue(String.valueOf(dateFormat.format(date)));
+		stock1.put("useraccount", ujarray);
+		Util.appendFile(stock1.toJSONString(), userfile);
 
 	}
+	/**
+	 * This method will get the stock information
+	 * 
+	 * @param stArray
+	 * @return 
+	 *            
+	 */
 
-	public void getInput() {
+	public JSONArray getstock(JSONArray stArray) {
 		System.out.println("enter the no of objects to add");
 		int number = sc.nextInt();
-       int amount=0;
-       String symbol="";
-       
-		
+		int amount = 0;
+		String symbol = "";
+
 		for (int i = 0; i < number; i++) {
 			JSONObject temp = new JSONObject();
 			System.out.println("enter stock symbol");
-        symbol=sc.next();
+			symbol = sc.next();
 			temp.put("symbol", symbol);
 			System.out.println("enter number of stock");
-			amount=sc.nextInt();
+			amount = sc.nextInt();
 			temp.put("number", amount);
 			System.out.println("enter price");
 			temp.put("price", sc.nextInt());
-			array.add(temp);
+			stArray.add(temp);
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Date date = new Date();
-			
-					
-			list.addShare(String.valueOf(amount),String.valueOf(dateFormat.format(date)), symbol);
+
+			list.addShare(String.valueOf(amount), String.valueOf(dateFormat.format(date)), symbol);
 		
 		}
+			return stArray;
+
+	}
+	/**
+	 * This method will get the input in the stock account
+	 * 
+	 * @param 
+	 * @return 
+	 *            
+	 */
+	public void getInput() {
+
+		if (Util.checkEmpty(file)) {
+			array = getstock(array);
+		} else {
+			JSONArray parseArray = Util.getjsonArray(file, "stockaccount");
+			array = getstock(parseArray);
+		}
+
 		stock.put("stockaccount", array);
 
 		Util.appendFile(stock.toJSONString(), file);
-		
-}
-	
 
-	public void getUserInput() {
+	}
+	/**
+	 * This method will get the user information
+	 * 
+	 * @param userArray
+	 * @return 
+	 *            
+	 */
+	public JSONArray getUser(JSONArray usearray) {
 		System.out.println("enter the number of  names  to add");
 		int number = sc.nextInt();
 		for (int i = 0; i < number; i++) {
@@ -222,112 +211,97 @@ public class StockAccount {
 			temp.put("number", sc.nextInt());
 			System.out.println("enter balance");
 			temp.put("balance", sc.nextInt());
-		array1.add(temp);
+			usearray.add(temp);
+		}
+		return usearray;
+		
+	}  
+	/**
+	 * This method will get the input in the user account
+	 * 
+	 * @param 
+	 * @return 
+	 *            
+	 */
+	
+	public void getUserInput() {
+		if(Util.checkEmpty(userfile)) {
+			array1=getUser(array1);
+		}
+		else
+		{
+			JSONArray parseArray = Util.getjsonArray(userfile, "useraccount");
+			array1=getUser(parseArray);
 		}
 		stock1.put("useraccount", array1);
 
 		Util.appendFile(stock1.toJSONString(), userfile);
-		
 
 	}
+	/**
+	 * This method will remove stock
+	 * 
+	 * @param symbol
+	 * @return 
+	 *            
+	 */
+
 	public void removeStock(String symbol) {
-		
-		JSONParser parser = new JSONParser();
-		int index=0 ;
-		try {
-			
-			JSONObject jobj = (JSONObject) parser.parse(new FileReader(file));
 
-			JSONArray jarray = (JSONArray) jobj.get("stockaccount");
-			for (Object obj1 : jarray) {
-				
-				JSONObject jsonObject = (JSONObject) obj1;
-				if (jsonObject.get("symbol").equals(symbol)) {
-			jarray.remove(obj1);
-			break;
-				}
-				index++;
+		new JSONParser();
+		JSONArray jarray = Util.getjsonArray(file, "stockaccount");
+		for (Object obj1 : jarray) {
+
+			JSONObject jsonObject = (JSONObject) obj1;
+			if (jsonObject.get("symbol").equals(symbol)) {
+				jarray.remove(obj1);
+				break;
 			}
-			stock.put("stockaccount", jarray);
-			Util.appendFile(stock.toJSONString(), file);
-			list.deleteElement(symbol);
-			
 		}
-			catch (ParseException ie1) {
-				ie1.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		
+		stock.put("stockaccount", jarray);
+		Util.appendFile(stock.toJSONString(), file);
+		list.deleteElement(symbol);
+
 	}
+
+	/**
+	 * This method will remove stock
+	 * 
+	 * @param symbol
+	 * @return
+	 * 
+	 */
 	public long valueOf() {
-		  JSONParser parser = new JSONParser();
-		long total=0;
+		new JSONParser();
+		long total = 0;
 
-		    try {
+		JSONArray jarray = Util.getjsonArray(file, "stockaccount");
 
-		    	JSONObject jobj = (JSONObject)parser.parse(new FileReader(file));
-		    	/*for(int i=0;i<farray.length;i++) {
-		    		jobj= (JSONObject)parser.parse(farray[i]);
-		    	}*/
-		    	JSONArray jarray=(JSONArray) jobj.get("stockaccount");
-		        
-		        for(Object obj1: jarray) {
-		        	JSONObject jsonObject = (JSONObject) obj1;
-		       long value=(long) jsonObject.get("number")*(long)jsonObject.get("price");
-		        	total=total+value;
-		        	System.out.println(value);
-		        }
-		    }
-		       
+		for (Object obj1 : jarray) {
+			JSONObject jsonObject = (JSONObject) obj1;
+			long value = (long) jsonObject.get("number") * (long) jsonObject.get("price");
+			total = total + value;
+			System.out.println(value);
+		}
 
-
-		    catch (ParseException ie1) {
-		        ie1.printStackTrace();
-		    } catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		return total;
 	}
+
 	public void printReport() {
-		  JSONParser parser = new JSONParser();
-			
-			    try {
+		new JSONParser();
 
-			    	JSONObject jobj = (JSONObject)parser.parse(new FileReader(file));
-			    	System.out.println(jobj.toJSONString());
-			        }
-			    
-			       
-
-
-			    catch (ParseException ie1) {
-			        ie1.printStackTrace();
-			    } catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		Util.viewList(file);
 	}
-		
-		public void viewlist() {
-			list.viewShare();
-		}
-		public void viewStack() {
-			stack.view();
-		}
-		public void viewQueue() {
-			queue.display();
-		}
+
+	public void viewlist() {
+		list.viewShare();
 	}
-	
 
+	public void viewStack() {
+		stack.view();
+	}
 
+	public void viewQueue() {
+		queue.display();
+	}
+}

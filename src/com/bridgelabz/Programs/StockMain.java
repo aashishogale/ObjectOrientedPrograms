@@ -1,32 +1,58 @@
 package com.bridgelabz.Programs;
+
 import java.util.Scanner;
+
 /***************************************************************************
-* Purpose : To create class simple stock
-*
-* @author   Aashish
-* @version  1.0
-* @since    13-10-2017
-****************************************************************************/
+ * Purpose : To create class simple stock
+ *
+ * @author Aashish
+ * @version 1.0
+ * @since 13-10-2017
+ ****************************************************************************/
 public class StockMain {
 
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		char ch = 0;
-		Stock stock=new Stock();
-		stock.initializeJSON();
-		do {
-		stock.addStock();
-		System.out.println("Do you want to enter more stock");
-		ch=sc.nextLine().charAt(0);
-		}while(ch!='n');
-		System.out.println("enter the stock name for the price");
-		String str=sc.nextLine();
-		System.out.println(stock.getSingleValue(str));
-		System.out.println(stock.returnSize());
-          sc.close();
-		StockPortfolio spf=new StockPortfolio();
-		long total=spf.getTotal();
-		System.out.println(total);
-	}
+		Scanner scanner = new Scanner(System.in);
+		char enter = 0;
+		Stock stock = new Stock();
+		int option = 0;
 
+		do {
+			System.out.println("enter option");
+			System.out.println("1.enter new stock");
+			System.out.println("2.get single stock value");
+			System.out.println("3.get no of stocks");
+			System.out.println("4 get total share value of all stocks");
+			System.out.println("5.view stock file");
+			option = scanner.nextInt();
+			switch (option) {
+			case 1:
+
+				stock.addNewStock();
+				break;
+			case 2:
+				scanner.nextLine();
+				System.out.println("enter the stock name for the price");
+				String str = scanner.nextLine();
+				System.out.println(stock.getSingleValue(str));
+				break;
+			case 3:
+				System.out.println(stock.returnSize());
+				break;
+			case 4:
+				StockPortfolio spf = new StockPortfolio();
+				long total = spf.getTotal();
+				System.out.println(total);
+				break;
+			case 5:
+				stock.show();
+				break;
+			}
+			System.out.println("Do you want to continue");
+			enter = scanner.next().charAt(0);
+
+		} while (enter != 'n');
+		scanner.close();
+
+	}
 }

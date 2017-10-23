@@ -1,7 +1,10 @@
 package com.bridgelabz.Programs;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
-import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -9,159 +12,131 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.Utility.Util;
+
 /***************************************************************************
-* Purpose : To create class Stock
-*
-* @author   Aashish
-* @version  1.0
-* @since    13-10-2017
-****************************************************************************/
+ * Purpose : To create class Stock
+ *
+ * @author Aashish
+ * @version 1.0
+ * @since 13-10-2017
+ ****************************************************************************/
 public class Stock {
-	String file="/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/stock.json";
+	String file = "/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/stock.json";
 
-	public void initializeJSON() {
-		  JSONObject stock=new JSONObject();
-	      
-	    
-	 	  JSONArray array=new JSONArray(); 
+	public void addNewStock() {
+		JSONObject stock = new JSONObject();
 
-	     
-	    stock.put("stock", array);
+		JSONArray array = new JSONArray();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			if (br.readLine() != null) {
+				addStock();
+				return;
+			}
 
-	    Util.appendFile(stock.toJSONString(),file);
+			getInput(array);
+			stock.put("stock", array);
+
+			Util.appendFile(stock.toJSONString(), file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	public  void addStock(){
-		 JSONParser parser = new JSONParser();
-	
-		 try {
-		    	String farray[]=Util.readFile(file);
-		    	
-		    	String jsonstring="";
-		    	for(String str:farray){
-		    		jsonstring=jsonstring+str;
-		    	}
-		    	JSONObject jobj = (JSONObject)parser.parse(jsonstring);
-		    	
-		    	JSONArray jarray=(JSONArray) jobj.get("stock");
-		    	getInput(jarray);
-		    	jobj.put("stock", jarray);
-		    	Util.appendFile(jobj.toJSONString(), file);
-		    	
-		 }
-		    	 catch (ParseException ie1) {
-		    	        ie1.printStackTrace();
-		    	    }
-		
-		
-		
+
+	public void addStock() {
+		JSONParser parser = new JSONParser();
+
+		JSONObject jobject = new JSONObject();
+
+		JSONArray jarray = Util.getjsonArray(file, "stock");
+		getInput(jarray);
+		jobject.put("stock", jarray);
+		Util.appendFile(jobject.toJSONString(), file);
+
 	}
+
 	public void getInput(JSONArray jsonarray) {
-		 Scanner sc=new Scanner(System.in);
-	
-		 	  JSONObject temp=new JSONObject();
-	    	  System.out.println("enter stock name");
-	     
-	    temp.put("name",sc.next());
-	      System.out.println("enter number of stock");
-	      temp.put("number",sc.nextInt());
-	      System.out.println("enter price");
-	     temp.put("price", sc.nextInt());
-	     jsonarray.add(temp);
-	      
+		Scanner sc = new Scanner(System.in);
+
+		JSONObject temp = new JSONObject();
+		System.out.println("enter stock name");
+
+		temp.put("name", sc.next());
+		System.out.println("enter number of stock");
+		temp.put("number", sc.nextInt());
+		System.out.println("enter price");
+		temp.put("price", sc.nextInt());
+		jsonarray.add(temp);
+
 	}
-public long getSingleValue(String stockname) {
-	
-	JSONParser parser = new JSONParser();
-	long total=0;
-    try {
-    	String farray[]=Util.readFile(file);
-    	
-    	String jsonstring="";
-    	for(String str:farray){
-    		jsonstring=jsonstring+str;
-    	}
-    	JSONObject jobj = (JSONObject)parser.parse(jsonstring);
-    	
-    	JSONArray jarray=(JSONArray) jobj.get("stock");
-    	 System.out.println("size"+jarray.size());
-        
-        for(Object obj1: jarray) {
-        	JSONObject jsonObject = (JSONObject) obj1;
-        	if( jsonObject.get("name").equals(stockname)) {
-        		long price=(long) jsonObject.get("price");
-        		long number=(long) jsonObject.get("number");
-        	
-        		total=price*number;
-        		
-        	}
-       
-        
-        	
-  
-        }
-       
-    }
-       
 
-  
-    catch (ParseException ie1) {
-        ie1.printStackTrace();
-    }
+	public long getSingleValue(String stockname) {
 
-	
-	return total;
-	
-}
-public int returnSize() {
-	JSONParser parser = new JSONParser();
-	long total=0;
-    try {
-    	String farray[]=Util.readFile(file);
-    	
-    	String jsonstring="";
-    	for(String str:farray){
-    		jsonstring=jsonstring+str;
-    	}
-    	JSONObject jobj = (JSONObject)parser.parse(jsonstring);
-    	
-    	JSONArray jarray=(JSONArray) jobj.get("stock");
-        return(jarray.size());
-    }
-    	 catch (ParseException ie1) {
-    	        ie1.printStackTrace();
-    	    }
-	return 0;
-   
-}
-public String[] getKeys() {
-	String []array=new String[returnSize()+1];
-	JSONParser parser = new JSONParser();
-	long total=0;
-    try {
-    	String farray[]=Util.readFile(file);
-    	
-    	String jsonstring="";
-    	for(String str:farray){
-    		jsonstring=jsonstring+str;
-    	}
-    	JSONObject jobj = (JSONObject)parser.parse(jsonstring);
-     	JSONArray jarray=(JSONArray) jobj.get("stock");
-     	for(Object obj1: jarray) {
-        	JSONObject jsonObject = (JSONObject) obj1;
-        	 Set<String> set =jsonObject.keySet();
-            array= set.toArray(array);
-        		
-        	}
-   
-    	
-       
-   	return array;
-        
-    }
-    	 catch (ParseException ie1) {
-    	        ie1.printStackTrace();
-    	    }
-	
-	return array;
-}
+		JSONParser parser = new JSONParser();
+		long total = 0;
+
+		JSONArray jarray = Util.getjsonArray(file, "stock");
+
+		for (Object obj1 : jarray) {
+			JSONObject jsonObject = (JSONObject) obj1;
+			if (jsonObject.get("name").equals(stockname)) {
+				long price = (long) jsonObject.get("price");
+				long number = (long) jsonObject.get("number");
+
+				total = price * number;
+
+			}
+
+		}
+
+		return total;
+
+	}
+
+	public int returnSize() {
+		JSONParser parser = new JSONParser();
+		long total = 0;
+		try {
+
+			JSONObject jobj = (JSONObject) parser.parse(new FileReader(file));
+
+			JSONArray jarray = (JSONArray) jobj.get("stock");
+			return (jarray.size());
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
+
+	public void show() {
+
+		JSONParser parser = new JSONParser();
+		try {
+
+			JSONObject jobj = (JSONObject) parser.parse(new FileReader(file));
+
+			System.out.println(jobj.toJSONString());
+
+		} catch (ParseException ie1) {
+			ie1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }

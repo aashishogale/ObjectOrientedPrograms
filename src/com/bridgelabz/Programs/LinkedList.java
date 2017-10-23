@@ -12,7 +12,12 @@ public class LinkedList<T> {
 	Node<T> head;
 	Node<T> tail;
 	static int count;
-
+	/**
+	 * purpose:add element to linked list
+	 * 
+	 * @param element
+	 * @return
+	 */
 	public void add(T element) {
 
 		Node<T> nd = new Node<T>();
@@ -32,7 +37,12 @@ public class LinkedList<T> {
 	}
 
 	
-
+	/**
+	 * purpose:add element to the head
+	 * 
+	 * @param element
+	 * @return
+	 */
 	public void addFirst(T element) {
 
 		Node<T> tmp = head;
@@ -46,7 +56,11 @@ public class LinkedList<T> {
 
 
 	
-
+	/**
+	 * purpose:to view the linked list
+	 *
+	 * @return
+	 */
 
 	public void view() {
 		Node<T> tmp = new Node<T>();
@@ -88,7 +102,11 @@ public class LinkedList<T> {
 		}
 		System.out.println("List empty");
 	}
-
+	/**
+	 * purpose:to check if list is empty
+	 * 
+	 * @return
+	 */
 	public int checkEmpty() {
 		Node<T> tmp = head;
 		if (tmp == null)
@@ -96,7 +114,11 @@ public class LinkedList<T> {
 		else
 			return 1;
 	}
-
+	/**
+	 * purpose:to delete the head
+	 *
+	 * @return tail node
+	 */
 	public T deleteFirst() {
 
 		Node<T> tmp = head;
@@ -112,13 +134,23 @@ public class LinkedList<T> {
 		return null;
 
 	}
-
+	/**
+	 * purpose:delete tail element
+	 *
+	 * @return tail element
+	 */
+	
 	public T deleteLast() {
 
 		return deleteAt(this.size() - 1);
 
 	}
-
+	/**
+	 * purpose delete at given postion
+	 * 
+	 * @param position
+	 * @return element
+	 */
 	public T deleteAt(int pos) {
 		Node<T> tmp = head;
 		Node<T> refNode = head;
@@ -181,7 +213,12 @@ public class LinkedList<T> {
 		}
 
 	}
-
+	/**
+	 * purpose:delete given element
+	 * 
+	 * @param element
+	 * @return value
+	 */
 	public T deleteElement(T element) {
 		Node<T> tmp = head;
 		Node<T> refNode = head;
@@ -242,6 +279,12 @@ public class LinkedList<T> {
 		}
 
 	}
+	/**
+	 * purpose:add element at given positon
+	 * 
+	 * @param number,position
+	 * @return
+	 */
 
 	public void insertAt(T number, int pos) {
 		Node<T> tmp = head;
@@ -305,7 +348,12 @@ public class LinkedList<T> {
 		}
 
 	}
-
+	/**
+	 * purpose:search for givent element
+	 * 
+	 * @param element
+	 * @return true or false
+	 */
 	public int traverse(T element) {
 		Node<T> tmp = head;
 		
@@ -348,7 +396,12 @@ public class LinkedList<T> {
 			tmp = tmp.getNextRef();
 		}
 	}
-
+	/**
+	 * purpose:find the item at given positon
+	 * 
+	 * @param positon
+	 * @return element
+	 */
 	public T returnItem(int pos) {
 		Node<T> tmp = head;
 		int count = 0;
@@ -365,7 +418,12 @@ public class LinkedList<T> {
 		}
 
 	}
-
+	/**
+	 * purpose:to return the positon withn a sorted a linked list
+	 * 
+	 * @param element
+	 * @return position
+	 */
 
 	public int returnPos(T element) {
 		Node<T> tmp = head;
@@ -399,7 +457,12 @@ public class LinkedList<T> {
 	}
 
 	
-	
+	/**
+	 * purpose:to find the index of the given element
+	 * 
+	 * @param element
+	 * @return position
+	 */
 	public int findIndex(T element) {
 		Node<T> tmp = head;
 
@@ -431,6 +494,12 @@ public class LinkedList<T> {
 
 	}
 
+	/**
+	 * purpose:to return the size of linked list
+	 * 
+	 * @param
+	 * @return count
+	 */
 	public int size() {
 		// TODO Auto-generated method stub
 
