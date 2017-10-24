@@ -75,7 +75,7 @@ public class Stock {
 
 	public long getSingleValue(String stockname) {
 
-		JSONParser parser = new JSONParser();
+		
 		long total = 0;
 
 		JSONArray jarray = Util.getjsonArray(file, "stock");

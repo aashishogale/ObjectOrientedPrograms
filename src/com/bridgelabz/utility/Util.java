@@ -664,11 +664,7 @@ public class Util {
 			}
 
 		}
-		if (flag == 0) {
-			return false;
-		}
-
-		return false;
+		return flag==1;
 	}
 
 	/**

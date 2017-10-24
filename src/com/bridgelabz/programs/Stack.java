@@ -9,7 +9,7 @@ package com.bridgelabz.programs;
  ****************************************************************************/
 
 public class Stack<T> {
-	LinkedList<T> list = new LinkedList<T>();
+	public LinkedList<T> list = new LinkedList<T>();
 
 	/**
 	 * purpose:push the element

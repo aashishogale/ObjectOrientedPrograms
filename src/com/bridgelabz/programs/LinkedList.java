@@ -179,7 +179,7 @@ public class LinkedList<T> {
 
 		if (refNode != null) {
 
-			if (refNode == head) {
+			if (refNode.equals(head)) {
 				T value = refNode.getValue();
 				tmp = refNode.getNextRef();
 

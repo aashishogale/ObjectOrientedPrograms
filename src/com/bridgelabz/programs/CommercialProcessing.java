@@ -28,7 +28,7 @@ public class CommercialProcessing {
 			System.out.println("enter 6 for queue");
 			System.out.println("enter 7 for report");
 			System.out.println("enter 8 for removing stock");
-			System.out.println("enter 9 for exit");
+
 			System.out.println("enter your option");
 			choice = sc.nextInt();
 			switch (choice) {
@@ -70,9 +70,9 @@ public class CommercialProcessing {
 				symbol = sc.nextLine();
 				stock.removeStock(symbol);
 				break;
-			case 9:
+			default:
+				System.out.println("enter correct value");
 				break;
-
 			}
 			System.out.println("do you want to continue");
 			enter = sc.next().charAt(0);
