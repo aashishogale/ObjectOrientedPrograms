@@ -13,13 +13,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.bridgelabz.programs.AddressbookObject;
+import com.bridgelabz.programs.Doctor;
+import com.bridgelabz.programs.Patient;
 import com.bridgelabz.programs.Queue;
+import com.bridgelabz.programs.RegEx;
 
 /***************************************************************************
  * Purpose : To create class for providing utility methods
@@ -37,6 +43,12 @@ public class Util {
 	public static String patientbook = "/home/bridgeit/Desktop/Patient.json";
 	public static String appointment = "/home/bridgeit/Desktop/appointment.json";
 	public static Random random1 = new Random();
+	public static String message = "Hello ​ <<name>> , ​ We​ ​ have​ ​ your​ ​ fullname​ ​ as​ ​ <<full​ ​ name>>​ ​ in​ ​ our​"
+			+ " ​ system.​ ​ your​ ​ contact​ ​ number​ ​ is​ ​ 91-xxxxxxxxxx. Please,let​ ​ us​ ​ know​ "
+			+ "​ in​ ​ case​ ​ of​ ​ any​ ​ clarification​ ​ Thank​ ​ you​ ​ BridgeLabz​ ​ 01/01/2016.";
+	public static AddressbookObject adobject = new AddressbookObject();
+	public static Doctor doctor = new Doctor();
+	public static Patient patient=new Patient();
 
 	public static String[] readFile(String filePath) {
 		String words[] = {};
@@ -279,6 +291,27 @@ public class Util {
 
 	}
 
+	public static void getAddressObject(AddressbookObject adobject) {
+		scanner.nextLine();
+		System.out.println("enter first name");
+		adobject.setFirstname(scanner.nextLine());
+		System.out.println("enter last name");
+		adobject.setLastname(scanner.nextLine());
+
+		System.out.println("enter address");
+		adobject.setAddress(scanner.nextLine());
+		System.out.println("enter city");
+		adobject.setCity(scanner.nextLine());
+		System.out.println("enter state");
+		adobject.setState(scanner.nextLine());
+		System.out.println("enter zipcode");
+		adobject.setZip(scanner.nextInt());
+		scanner.nextLine();
+		System.out.println("enter phone number");
+		adobject.setPhno(scanner.nextInt());
+
+	}
+
 	/**
 	 * This method gets the adress into the json array
 	 * 
@@ -290,27 +323,22 @@ public class Util {
 		System.out.println("enter the number of  names  to add");
 		int number = scanner.nextInt();
 		for (int i = 0; i < number; i++) {
+			getAddressObject(adobject);
 			JSONObject infoObject = new JSONObject();
-			System.out.println("enter first name");
 
-			infoObject.put("firstname", scanner.next());
-			System.out.println("enter last name");
+			infoObject.put("firstname", adobject.getFirstname());
 
-			infoObject.put("lastname", scanner.next());
-			System.out.println("enter address");
+			infoObject.put("lastname", adobject.getLastname());
 
-			infoObject.put("address", scanner.next());
-			System.out.println("enter city");
+			infoObject.put("address", adobject.getAddress());
 
-			infoObject.put("city", scanner.next());
-			System.out.println("enter state");
+			infoObject.put("city", adobject.getCity());
 
-			infoObject.put("state", scanner.next());
+			infoObject.put("state", adobject.getState());
 
-			System.out.println("enter zipcode");
-			infoObject.put("zip", scanner.nextInt());
-			System.out.println("enter phone number");
-			infoObject.put("phno", scanner.nextInt());
+			infoObject.put("zip", adobject.getZip());
+
+			infoObject.put("phno", adobject.getPhno());
 			newArray.add(infoObject);
 		}
 		return newArray;
@@ -506,19 +534,36 @@ public class Util {
 	 * @return docarray
 	 * 
 	 */
-	public static JSONArray getDoctor(JSONArray docarray) {
-		JSONObject infoObject = new JSONObject();
-		System.out.println("enter  name");
 
-		infoObject.put("name", scanner.next());
+	public static void getDoctorObject(Doctor doctor) {
+		System.out.println("enter  name");
+		doctor.setName(scanner.nextLine());
 		System.out.println("enter specializtion");
 
-		infoObject.put("special", Util.getSpecial());
+		doctor.setSpecial(getSpecial());
 		System.out.println("enter availability");
+		doctor.setAvail(getAvail());
+		doctor.setId(Util.getDoctorid());
 
-		infoObject.put("avail", Util.getAvail());
+	}
+	/**
+	 * This method will get the information for doctor
+	 * 
+	 * @param docarray
+	 * @return docarray
+	 * 
+	 */
+	public static JSONArray getDoctor(JSONArray docarray) {
+		JSONObject infoObject = new JSONObject();
 
-		infoObject.put("id", Util.getDoctorid());
+		getDoctorObject(doctor);
+		infoObject.put("name", doctor.getName());
+
+		infoObject.put("special", doctor.getSpecial());
+
+		infoObject.put("avail", doctor.getAvail());
+
+		infoObject.put("id", doctor.getId());
 		infoObject.put("patientcount", 0);
 		docarray.add(infoObject);
 		return docarray;
@@ -559,18 +604,19 @@ public class Util {
 	 * 
 	 */
 
-	public static JSONArray getPatient(JSONArray paArray, String patient) {
+	public static JSONArray getPatient(JSONArray paArray, String patientname) {
 		JSONObject infoObject = new JSONObject();
+         addPatientObject(patient, patientname);
+         
+		infoObject.put("name", patient.getName());
+		
 
-		infoObject.put("name", patient);
-		System.out.println("enter mobile id");
+		infoObject.put("mobile",patient.getMobile());
+	
 
-		infoObject.put("mobile", scanner.nextInt());
-		System.out.println("enter age");
+		infoObject.put("age", patient.getAge());
 
-		infoObject.put("age", scanner.nextInt());
-
-		infoObject.put("id", Util.getPatientid());
+		infoObject.put("id", patient.getId());
 
 		paArray.add(infoObject);
 		return paArray;
@@ -583,6 +629,19 @@ public class Util {
 	 * @return
 	 * 
 	 */
+	
+	
+	public static void addPatientObject(Patient patient,String patientname) {
+		patient.setName(patientname);
+		System.out.println("enter mobile id");
+		patient.setMobile(scanner.nextInt());
+		System.out.println("enter age");
+		patient.setAge(scanner.nextInt());
+	patient.setId(Util.getPatientid());
+		
+		
+		
+	}
 	public static void addNewPatient(String patient) {
 		JSONObject jsonobject1 = new JSONObject();
 
@@ -664,7 +723,7 @@ public class Util {
 			}
 
 		}
-		return flag==1;
+		return flag == 1;
 	}
 
 	/**
@@ -1008,5 +1067,20 @@ public class Util {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public static String replaceString(RegEx regular) {
+		Util.replaceString("<<name>>", regular.getName());
+		Util.replaceString("<<full​ ​ name>>​", regular.getFullname());
+		Util.replaceString("xxxxxxxxxx", regular.getContact());
+		Util.replaceString("01/01/2016", regular.getDate2());
+		return message;
+
+	}
+
+	public static void replaceString(String toReplace, String replaceWith) {
+		Pattern pattern = Pattern.compile(toReplace);
+		Matcher matcher = pattern.matcher(message);
+		message = matcher.replaceAll(replaceWith);
 	}
 }

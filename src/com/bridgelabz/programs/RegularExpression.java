@@ -6,6 +6,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.bridgelabz.utility.Util;
+
 /***************************************************************************
  * Purpose : To create class for Regular expression
  *
@@ -16,35 +18,28 @@ import java.util.regex.Pattern;
 
 public class RegularExpression {
 
-	public static String message = "Hello ​ <<name>> , ​ We​ ​ have​ ​ your​ ​ fullname​ ​ as​ ​ <<full​ ​ name>>​ ​ in​ ​ our​"
-			+ " ​ system.​ ​ your​ ​ contact​ ​ number​ ​ is​ ​ 91-xxxxxxxxxx. Please,let​ ​ us​ ​ know​ "
-			+ "​ in​ ​ case​ ​ of​ ​ any​ ​ clarification​ ​ Thank​ ​ you​ ​ BridgeLabz​ ​ 01/01/2016.";
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Scanner sc = new Scanner(System.in);
+		RegEx regular = new RegEx();
+		Scanner scanner = new Scanner(System.in);
 		RegularExpression reg = new RegularExpression();
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		String date2 = format.format(date);
+		String date1 = format.format(date).toString();
+		regular.setDate2(date1);
 		System.out.println("Enter your name ");
-		String name = sc.nextLine();
+		regular.setName(scanner.nextLine());
 		System.out.println("Enter your full name ");
-		String fullName = sc.nextLine();
+		regular.setFullname(scanner.nextLine());
 		System.out.println("Enter your Contact number");
-		String contact = sc.nextLine();
-		reg.replaceString("<<name>>", name);
-		reg.replaceString("<<full​ ​ name>>​", fullName);
-		reg.replaceString("xxxxxxxxxx", contact);
-		reg.replaceString("01/01/2016", date2);
-		System.out.println(message);
-		sc.close();
+		regular.setContact(scanner.nextLine());
+
+		System.out.println(Util.replaceString(regular));
+		scanner.close();
 	}
 
-	public void replaceString(String toReplace, String replaceWith) {
-		Pattern pattern = Pattern.compile(toReplace);
-		Matcher matcher = pattern.matcher(message);
-		message = matcher.replaceAll(replaceWith);
-	}
+	
 
 }

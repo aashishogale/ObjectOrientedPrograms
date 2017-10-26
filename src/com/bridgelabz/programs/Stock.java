@@ -21,7 +21,9 @@ import com.bridgelabz.utility.Util;
  * @since 13-10-2017
  ****************************************************************************/
 public class Stock {
-	public String file = "/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/stock.json";
+	public String file = "/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/programs/stock.json";
+	public StockObject stockobj = new StockObject();
+	public static Scanner scanner = new Scanner(System.in);
 
 	public void addNewStock() {
 		JSONObject stock = new JSONObject();
@@ -33,7 +35,7 @@ public class Stock {
 				addStock();
 				return;
 			}
-
+			getObject();
 			getInput(array);
 			stock.put("stock", array);
 
@@ -52,30 +54,38 @@ public class Stock {
 		JSONObject jobject = new JSONObject();
 
 		JSONArray jarray = Util.getjsonArray(file, "stock");
+		getObject();
 		getInput(jarray);
 		jobject.put("stock", jarray);
 		Util.appendFile(jobject.toJSONString(), file);
 
 	}
 
+	public void getObject() {
+		System.out.println("enter stock name");
+		stockobj.setName(scanner.next());
+		System.out.println("enter number of stock");
+		stockobj.setNumber(scanner.nextInt());
+		System.out.println("enter price");
+		stockobj.setPrice(scanner.nextInt());
+
+	}
+
 	public void getInput(JSONArray jsonarray) {
-		Scanner sc = new Scanner(System.in);
 
 		JSONObject temp = new JSONObject();
-		System.out.println("enter stock name");
 
-		temp.put("name", sc.next());
-		System.out.println("enter number of stock");
-		temp.put("number", sc.nextInt());
-		System.out.println("enter price");
-		temp.put("price", sc.nextInt());
+		temp.put("name", stockobj.getName());
+
+		temp.put("number", stockobj.getnumber());
+
+		temp.put("price", stockobj.getPrice());
 		jsonarray.add(temp);
 
 	}
 
 	public long getSingleValue(String stockname) {
 
-		
 		long total = 0;
 
 		JSONArray jarray = Util.getjsonArray(file, "stock");

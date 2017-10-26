@@ -21,14 +21,15 @@ public class CommercialProcessing {
 		int number;
 		do {
 			System.out.println("enter 1 for adding new stock");
-			System.out.println("enter 2 for buying  stock");
-			System.out.println("enter 3 for  selling stock");
+			System.out.println("enter 2 for buying  shares");
+			System.out.println("enter 3 for  selling shares");
 			System.out.println("enter 4 for  viewing list");
 			System.out.println("enter 5 for viewing stack transaction");
 			System.out.println("enter 6 for queue");
 			System.out.println("enter 7 for report");
 			System.out.println("enter 8 for removing stock");
-
+			System.out.println("enter 9 for adding user");
+			System.out.println("enter 10 for viewing user");
 			System.out.println("enter your option");
 			choice = sc.nextInt();
 			switch (choice) {
@@ -69,6 +70,12 @@ public class CommercialProcessing {
 				System.out.println("enter your symbol ");
 				symbol = sc.nextLine();
 				stock.removeStock(symbol);
+				break;
+			case 9:
+				stock.getUserInput();
+				break;
+			case 10:
+				stock.viewUsers();
 				break;
 			default:
 				System.out.println("enter correct value");

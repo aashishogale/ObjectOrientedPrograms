@@ -14,10 +14,12 @@ import com.bridgelabz.utility.Util;
 public class AddressBook {
 
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 		String name;
 		char enter;
 		int choice;
+		
+		
 
 		do {
 			System.out.println("1.add names");
@@ -29,7 +31,7 @@ public class AddressBook {
 			
 
 			System.out.println("enter your choice");
-			choice = sc.nextInt();
+			choice = scanner.nextInt();
 			switch (choice) {
 			case 1:
 				Util.createAddressBook();
@@ -37,7 +39,7 @@ public class AddressBook {
 				break;
 			case 2:
 				System.out.println("enter the name");
-				name = sc.next();
+				name = scanner.next();
 				Util.editAddressBook(name);
 				Util.viewlist();
 				break;
@@ -45,7 +47,7 @@ public class AddressBook {
 				Util.viewlist();
 				System.out.println("enter the name");
 
-				name = sc.next();
+				name = scanner.next();
 				Util.deletePerson(name);
 				Util.viewlist();
 				break;
@@ -64,7 +66,7 @@ public class AddressBook {
 			}
 
 			System.out.println("do you want to continue");
-			enter = sc.next().charAt(0);
+			enter = scanner.next().charAt(0);
 
 		} while (enter != 'n');
 

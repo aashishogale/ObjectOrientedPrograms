@@ -16,7 +16,7 @@ public class InventoryManager {
 	public Scanner scanner = new Scanner(System.in);
 	public JSONParser parser = new JSONParser();
 
-	public String file = "/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/Programs/Inventory.json";
+	public String file = "/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/programs/Inventory.json";
 
 	/**
 	 * purpose:to get the info of the inventory
@@ -113,7 +113,9 @@ public class InventoryManager {
 		for (Object obj1 : invArray) {
 			JSONObject jsonObject = (JSONObject) obj1;
 			if (jsonObject.get("name").equals(name)) {
+				
 				long price = (long) jsonObject.get("price");
+				
 				long weight = (long) jsonObject.get("weight");
 
 				total = price * weight;

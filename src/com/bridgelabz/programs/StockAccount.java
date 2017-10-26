@@ -19,7 +19,7 @@ import com.bridgelabz.utility.Util;
  * @since 13-10-2017
  ****************************************************************************/
 public class StockAccount {
-	public Scanner sc = new Scanner(System.in);
+	public Scanner scanner = new Scanner(System.in);
 	public String userfile = "/home/bridgeit/Desktop/useraccount.json";
 	public String file;
 	public JSONObject stock = new JSONObject();
@@ -29,6 +29,8 @@ public class StockAccount {
 	public LinkedList<String> list = new LinkedList<String>();
 	public Stack<String> stack = new Stack<String>();
 	public Queue<String> queue = new Queue<String>();
+	public StockObject stockobj=new StockObject();
+	public User user=new User();
 
 	StockAccount(String filename) {
 
@@ -70,7 +72,7 @@ public class StockAccount {
 		stock.put("stockaccount", jarray);
 		Util.appendFile(stock.toJSONString(), file);
 
-		JSONArray ujarray = Util.getjsonArray(userfile, "useracount");
+		JSONArray ujarray = Util.getjsonArray(userfile, "useraccount");
 
 		for (Object uobj : ujarray) {
 			JSONObject jsonObject = (JSONObject) uobj;
@@ -137,6 +139,16 @@ public class StockAccount {
 		Util.appendFile(stock1.toJSONString(), userfile);
 
 	}
+	
+	public void getObject() {
+		System.out.println("enter stock name");
+		stockobj.setName(scanner.next());
+		System.out.println("enter number of stock");
+		stockobj.setNumber(scanner.nextInt());
+		System.out.println("enter price");
+		stockobj.setPrice(scanner.nextInt());
+
+	}
 
 	/**
 	 * This method will get the stock information
@@ -148,20 +160,20 @@ public class StockAccount {
 
 	public JSONArray getstock(JSONArray stArray) {
 		System.out.println("enter the no of objects to add");
-		int number = sc.nextInt();
+		int number = scanner.nextInt();
 		int amount = 0;
 		String symbol = "";
 
 		for (int i = 0; i < number; i++) {
 			JSONObject temp = new JSONObject();
-			System.out.println("enter stock symbol");
-			symbol = sc.next();
-			temp.put("symbol", symbol);
-			System.out.println("enter number of stock");
-			amount = sc.nextInt();
-			temp.put("number", amount);
-			System.out.println("enter price");
-			temp.put("price", sc.nextInt());
+			getObject();
+		
+			temp.put("symbol", stockobj.getName());
+			
+			
+			temp.put("number", stockobj.getnumber());
+			
+			temp.put("price", stockobj.getPrice());
 			stArray.add(temp);
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Date date = new Date();
@@ -186,6 +198,7 @@ public class StockAccount {
 			array = getstock(array);
 		} else {
 			JSONArray parseArray = Util.getjsonArray(file, "stockaccount");
+		
 			array = getstock(parseArray);
 		}
 
@@ -204,20 +217,31 @@ public class StockAccount {
 	 */
 	public JSONArray getUser(JSONArray usearray) {
 		System.out.println("enter the number of  names  to add");
-		int number = sc.nextInt();
+		int number = scanner.nextInt();
 		for (int i = 0; i < number; i++) {
 			JSONObject temp = new JSONObject();
-			System.out.println("enter user name");
+			getUser();
 
-			temp.put("name", sc.next());
-			System.out.println("enter number of stock");
-			temp.put("number", sc.nextInt());
-			System.out.println("enter balance");
-			temp.put("balance", sc.nextInt());
+			temp.put("name", user.getName());
+			
+			temp.put("number", user.getNumber());
+			
+			temp.put("balance", user.getBalance());
 			usearray.add(temp);
 		}
 		return usearray;
 
+	}
+	public void getUser() {
+		scanner.nextLine();
+		System.out.println("enter user name");
+		user.setName(scanner.nextLine());
+		System.out.println("enter number of stock");
+		user.setNumber(scanner.nextInt());
+		System.out.println("enter balance");
+		user.setBalance(scanner.nextInt());
+		
+		
 	}
 
 	/**
@@ -291,9 +315,13 @@ public class StockAccount {
 	}
 
 	public void printReport() {
-		new JSONParser();
+		
 
 		Util.viewList(file);
+	}
+	public void viewUsers()
+	{
+		Util.viewList(userfile);
 	}
 
 	public void viewlist() {
