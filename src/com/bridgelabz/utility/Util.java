@@ -48,7 +48,8 @@ public class Util {
 			+ "​ in​ ​ case​ ​ of​ ​ any​ ​ clarification​ ​ Thank​ ​ you​ ​ BridgeLabz​ ​ 01/01/2016.";
 	public static AddressbookObject adobject = new AddressbookObject();
 	public static Doctor doctor = new Doctor();
-	public static Patient patient=new Patient();
+	public static Patient patient = new Patient();
+	static String[] regarray = { "Hello", "<<name>>", "<<full​ ​ name>>​", "xxxxxxxxxx", "01/01/2016" };
 
 	public static String[] readFile(String filePath) {
 		String words[] = {};
@@ -253,6 +254,17 @@ public class Util {
 			}
 
 			allplayers.enqueue(queue);
+		}
+		System.out.println("unsorted");
+		for (int i = 0; i < 4; i++) {
+			System.out.print((i + 1) + "   player  ");
+
+			for (int j = 0; j < 9; j++) {
+
+				System.out.println(player[i][j]);
+			}
+			System.out.println("");
+
 		}
 
 		for (int i = 0; i < 4; i++) {
@@ -546,6 +558,7 @@ public class Util {
 		doctor.setId(Util.getDoctorid());
 
 	}
+
 	/**
 	 * This method will get the information for doctor
 	 * 
@@ -606,13 +619,11 @@ public class Util {
 
 	public static JSONArray getPatient(JSONArray paArray, String patientname) {
 		JSONObject infoObject = new JSONObject();
-         addPatientObject(patient, patientname);
-         
-		infoObject.put("name", patient.getName());
-		
+		addPatientObject(patient, patientname);
 
-		infoObject.put("mobile",patient.getMobile());
-	
+		infoObject.put("name", patient.getName());
+
+		infoObject.put("mobile", patient.getMobile());
 
 		infoObject.put("age", patient.getAge());
 
@@ -623,25 +634,30 @@ public class Util {
 	}
 
 	/**
-	 * This method will add new patient
+	 * This method will get patient object
 	 * 
-	 * @param
+	 * @param patient,patientname
 	 * @return
 	 * 
 	 */
-	
-	
-	public static void addPatientObject(Patient patient,String patientname) {
+
+	public static void addPatientObject(Patient patient, String patientname) {
 		patient.setName(patientname);
 		System.out.println("enter mobile id");
 		patient.setMobile(scanner.nextInt());
 		System.out.println("enter age");
 		patient.setAge(scanner.nextInt());
-	patient.setId(Util.getPatientid());
-		
-		
-		
+		patient.setId(Util.getPatientid());
+
 	}
+
+	/**
+	 * This method will add new patient
+	 * 
+	 * @param patient
+	 * @return
+	 * 
+	 */
 	public static void addNewPatient(String patient) {
 		JSONObject jsonobject1 = new JSONObject();
 
@@ -1069,18 +1085,35 @@ public class Util {
 		return false;
 	}
 
+	/**
+	 * This method will replace the string
+	 * 
+	 * @param regular
+	 * @return message
+	 * 
+	 */
 	public static String replaceString(RegEx regular) {
-		Util.replaceString("<<name>>", regular.getName());
-		Util.replaceString("<<full​ ​ name>>​", regular.getFullname());
-		Util.replaceString("xxxxxxxxxx", regular.getContact());
-		Util.replaceString("01/01/2016", regular.getDate2());
+		String[] newarray = { "doctor", regular.getName(), regular.getFullname(), regular.getContact(),
+				regular.getDate2() };
+		Util.replaceString(newarray);
+
 		return message;
 
 	}
 
-	public static void replaceString(String toReplace, String replaceWith) {
-		Pattern pattern = Pattern.compile(toReplace);
-		Matcher matcher = pattern.matcher(message);
-		message = matcher.replaceAll(replaceWith);
+	/**
+	 * This method will replace the array
+	 * 
+	 * @param newarray
+	 * @return
+	 * 
+	 */
+	public static void replaceString(String[] newarray) {
+		for (int j = 0; j < regarray.length; j++) {
+
+			Pattern pattern = Pattern.compile(regarray[j]);
+			Matcher matcher = pattern.matcher(message);
+			message = matcher.replaceAll(newarray[j]);
+		}
 	}
 }

@@ -17,7 +17,10 @@ public class InventoryManager {
 	public JSONParser parser = new JSONParser();
 
 	public String file = "/home/bridgeit/workspace/ObjectOrientedPrograms/src/com/bridgelabz/programs/Inventory.json";
-
+    public Inventory inventory=new Inventory();
+    
+    
+    
 	/**
 	 * purpose:to get the info of the inventory
 	 * 
@@ -75,13 +78,13 @@ public class InventoryManager {
 			for (int i = 0; i < number; i++) {
 
 				JSONObject temp = new JSONObject();
-				System.out.println("enter name");
-				String name = scanner.nextLine();
-				temp.put("name", name);
-				System.out.println("enter weight");
-				temp.put("weight", scanner.nextInt());
-				System.out.println("enter price");
-				temp.put("price", scanner.nextInt());
+				
+			getObject();
+				temp.put("name",inventory.getName());
+			
+				temp.put("weight", inventory.getWeight());
+		;
+				temp.put("price", inventory.getPrice());
 				scanner.nextLine();
 				invArray.add(temp);
 			}
@@ -129,5 +132,15 @@ public class InventoryManager {
 
 	public void viewlist() {
 		Util.viewList(file);
+	}
+	
+	public void getObject() {
+		System.out.println("enter stock name");
+		inventory.setName(scanner.next());
+		System.out.println("enter Weight");
+		inventory.setWeight(scanner.nextInt());
+		System.out.println("enter price");
+		inventory.setPrice(scanner.nextInt());
+
 	}
 }

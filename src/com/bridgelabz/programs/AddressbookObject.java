@@ -31,6 +31,7 @@ public class AddressbookObject {
 		this.address = address;
 	}
 	public String getCity() {
+		System.out.println(city);
 		return city;
 	}
 	public void setCity(String city) {
